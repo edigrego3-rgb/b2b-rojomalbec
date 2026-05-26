@@ -97,15 +97,29 @@ def buscar_imagenes(nombre_producto):
         return None, None
         
     term = nombre_producto.replace(" ", "").lower()
-    # Casos especiales
-    if "sloopy joe" in nombre_producto.lower(): term = "sloppyjoe"
-    if "sal al malbec" in nombre_producto.lower(): term = "salmalbec"
-    if "sal negra" in nombre_producto.lower(): term = "salhawaiana"
+    
+    # --- DICCIONARIO INTELIGENTE PARA CASOS ESPECIALES ---
+    if "sloopy joe" in nombre_producto.lower() or "sloppy" in nombre_producto.lower(): term = "sloppyjoe"
+    elif "sal al malbec" in nombre_producto.lower(): term = "salmalbec"
+    elif "sal negra" in nombre_producto.lower() or "hawaiana" in nombre_producto.lower(): term = "salhawaiana"
+    elif "ajo a las hierbas" in nombre_producto.lower(): term = "ajohierbas"
+    elif "bbq" in nombre_producto.lower() or "barbacoa" in nombre_producto.lower(): term = "barbacoa"
+    elif "bosque y brasas" in nombre_producto.lower(): term = "bosquebrasas"
+    elif "kebab & dip" in nombre_producto.lower() or "kebab" in nombre_producto.lower(): term = "blendkebab"
+    elif "panko" in nombre_producto.lower() or "sesamo y limon" in nombre_producto.lower(): term = "panko"
+    elif "españa profunda" in nombre_producto.lower() or "espana" in nombre_producto.lower(): term = "espanaprofunda"
+    elif "glühwein" in nombre_producto.lower() or "gluhwein" in nombre_producto.lower(): term = "gluhwein"
+    elif "mocktail" in nombre_producto.lower(): term = "botanico" # o lo que haya
+    elif "panch" in nombre_producto.lower(): term = "panchphoron"
+    
+    # Limpiar caracteres especiales del término a buscar
+    term = term.replace("&", "").replace("(", "").replace(")", "").replace("ñ", "n").replace("ü", "u")
     
     archivos_encontrados = []
     for f in os.listdir(images_dir):
         if f.endswith(".png") or f.endswith(".jpg"):
-            if term in f.replace("_", "").lower():
+            f_limpio = f.replace("_", "").lower().replace("ñ", "n")
+            if term in f_limpio:
                 archivos_encontrados.append(f)
                 
     img_frontal = None
