@@ -290,7 +290,7 @@ def buscar_imagenes(nombre_producto):
     elif "rosas y romero" in term: term = "rosas"
     elif "del desierto" in term: term = "desierto"
     elif "vikinga" in term: term = "vikinga"
-    elif "limon y chile" in term: term = "limon_chile"
+    elif "limon y chile" in term: term = "limonchile"
     elif "queso" in term: term = "queso"
     elif "parrilera" in term: term = "parrilera"
     elif "pimienta negra" in term: term = "pimientanegra"
