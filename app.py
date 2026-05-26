@@ -470,23 +470,22 @@ for i, tab in enumerate(tabs):
                 # Badge de cantidad en carrito
                 badge_html = f"<div class='cart-badge'>{qty_actual}</div>" if qty_actual > 0 else ""
                 
-                st.markdown(f"""
-                <div class='card'>
-                    {badge_html}
-                    <div class='prod-name'>{nombre}</div>
-                    <div class='price-row'>
-                        <div>
-                            <div class='price-label'>Tu costo</div>
-                            <div class='price-main'>$ {costo_redondeado:,}</div>
-                        </div>
-                        <div class='price-pvp'>
-                            <div class='price-label'>PVP sugerido</div>
-                            <div class='price-pvp-value'>$ {pvp_redondeado:,}</div>
-                        </div>
-                    </div>
-                    <div class='gain-badge'>📈 Ganancia: $ {ganancia_neta:,}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                html_card = f"""<div class='card'>
+{badge_html}
+<div class='prod-name'>{nombre}</div>
+<div class='price-row'>
+<div>
+<div class='price-label'>Tu costo</div>
+<div class='price-main'>$ {costo_redondeado:,}</div>
+</div>
+<div class='price-pvp'>
+<div class='price-label'>PVP sugerido</div>
+<div class='price-pvp-value'>$ {pvp_redondeado:,}</div>
+</div>
+</div>
+<div class='gain-badge'>📈 Ganancia: $ {ganancia_neta:,}</div>
+</div>"""
+                st.markdown(html_card, unsafe_allow_html=True)
                 
                 # Imágenes (Frontal grande + Trasera chica)
                 if img_front and img_back:
