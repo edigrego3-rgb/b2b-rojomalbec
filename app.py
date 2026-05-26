@@ -487,14 +487,8 @@ for i, tab in enumerate(tabs):
 </div>"""
                 st.markdown(html_card, unsafe_allow_html=True)
                 
-                # Imágenes (Frontal grande + Trasera chica)
-                if img_front and img_back:
-                    img_col1, img_col2 = st.columns([3, 2])
-                    with img_col1:
-                        st.image(img_front, use_container_width=True)
-                    with img_col2:
-                        st.image(img_back, use_container_width=True)
-                elif img_front:
+                # Imágenes (Solo Frontal para no ensuciar la vista)
+                if img_front:
                     st.image(img_front, use_container_width=True)
                 
                 # Descripción colapsable

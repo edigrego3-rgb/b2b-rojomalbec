@@ -21,19 +21,29 @@ def extraer_descripcion(nombre_blend, filepath="Descripciones_RojoMalbec.md"):
         with open(filepath, 'r', encoding='utf-8') as f:
             contenido = f.read()
             
-        patron = re.compile(rf"##\s+.*?{re.escape(nombre_blend)}.*?$.*?(?=\n## |\Z)", re.MULTILINE | re.IGNORECASE | re.DOTALL)
+        # Limpiar el nombre de la BD para que coincida mejor con el Markdown
+        nombre_buscar = nombre_blend.lower().replace("blend ", "").replace("vital ", "").strip()
+        
+        # Regex estricta: busca un encabezado ## que contenga el nombre en ESA misma línea,
+        # y captura hasta el próximo ## o el final del archivo.
+        patron = re.compile(rf"^##\s+[^\n]*?{re.escape(nombre_buscar)}[^\n]*\n(.*?)(?=^## |\Z)", re.MULTILINE | re.IGNORECASE | re.DOTALL)
         match = patron.search(contenido)
         
+        # Si falla, intentamos con el nombre original completo
+        if not match:
+            patron_alt = re.compile(rf"^##\s+[^\n]*?{re.escape(nombre_blend)}[^\n]*\n(.*?)(?=^## |\Z)", re.MULTILINE | re.IGNORECASE | re.DOTALL)
+            match = patron_alt.search(contenido)
+            
         if match:
-            bloque = match.group(0)
+            bloque = match.group(1)
             lineas = bloque.split('\n')
             
             descripcion_limpia = []
             ingredientes_texto = ""
             
-            for linea in lineas[1:]: # saltar el título
+            for linea in lineas:
                 linea = linea.strip()
-                if not linea or linea.startswith('---') or linea.startswith('>') or linea.startswith('#'):
+                if not linea or linea.startswith('---') or linea.startswith('>') or linea.startswith('#') or linea.startswith('='):
                     continue
                 
                 # Limpiar negritas
@@ -41,7 +51,7 @@ def extraer_descripcion(nombre_blend, filepath="Descripciones_RojoMalbec.md"):
                 
                 if linea_limpia.startswith('Ingredientes:'):
                     ingredientes_texto = linea_limpia
-                elif linea_limpia.startswith('Técnica') or linea_limpia.startswith('Maridaje') or linea_limpia.startswith('Uso'):
+                elif linea_limpia.startswith('Técnica') or linea_limpia.startswith('Maridaje') or linea_limpia.startswith('Uso') or linea_limpia.startswith('Perfil'):
                     descripcion_limpia.append(f"• {linea_limpia}")
                 else:
                     if not ingredientes_texto and not linea_limpia.startswith('•'):
@@ -55,8 +65,10 @@ def extraer_descripcion(nombre_blend, filepath="Descripciones_RojoMalbec.md"):
             for extra in [l for l in descripcion_limpia if l.startswith('•')]:
                 texto_final += f"{extra}\n"
                 
-            return texto_final.strip() if texto_final.strip() else "Una creación premium de Rojo Malbec."
-    except Exception:
+            resultado = texto_final.strip()
+            return resultado if resultado else "Una creación premium de Rojo Malbec."
+    except Exception as e:
+        print(f"Error extraendo: {e}")
         pass
         
     return "Una creación premium de Rojo Malbec."
