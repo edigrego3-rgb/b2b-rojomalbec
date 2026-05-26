@@ -296,11 +296,15 @@ def buscar_imagenes(nombre_producto):
     elif "pimienta negra" in term: term = "pimientanegra"
     elif "pimienta roja" in term: term = "pimientaroja"
     elif "pimienta verde" in term: term = "pimientaverde"
+    elif "jerk" in term: term = "jerk"
+    elif "nanami" in term: term = "nanami"
+    elif "pesto" in term: term = "pesto"
+    elif "za'atar" in term or "zaatar" in term: term = "zaatar"
     else:
         # Limpiar espacios si no cayó en ningún caso especial
         term = term.replace(" ", "")
         
-    term = term.replace("&", "").replace("(", "").replace(")", "").replace("ñ", "n").replace("ü", "u")
+    term = term.replace("&", "").replace("(", "").replace(")", "").replace("ñ", "n").replace("ü", "u").replace("'", "").replace("ō", "o")
     
     # Filtrar archivos
     archivos_validos = []
