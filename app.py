@@ -248,9 +248,9 @@ def detectar_categoria(nombre_producto):
         return "🧂 Sales"
     elif "vital" in nombre:
         return "💚 Vital"
-    elif "blend" in nombre or "bbq" in nombre or "curry" in nombre or "baharat" in nombre or "masala" in nombre or "joe" in nombre or "ranch" in nombre or "pesto" in nombre or "jerk" in nombre:
+    elif "blend" in nombre or "bbq" in nombre or "curry" in nombre or "baharat" in nombre or "masala" in nombre or "joe" in nombre or "ranch" in nombre or "pesto" in nombre or "jerk" in nombre or "panko" in nombre or "criolla" in nombre or "muddica" in nombre or "nanami" in nombre or "panch phoron" in nombre or "vadouvan" in nombre or "españa" in nombre or "mexicano" in nombre or "glühwein" in nombre:
         return "🌿 Blends"
-    elif "té " in nombre or "te " in nombre or "rooibos" in nombre or "karak" in nombre:
+    elif "té " in nombre or nombre.startswith("te ") or " rooibos" in nombre or nombre.startswith("rooibos") or " karak" in nombre or nombre.startswith("karak"):
         return "🍵 Tés"
     elif "mocktail" in nombre:
         return "🍹 Mocktails"
@@ -293,6 +293,9 @@ def buscar_imagenes(nombre_producto):
     elif "limon y chile" in term: term = "limon_chile"
     elif "queso" in term: term = "queso"
     elif "parrilera" in term: term = "parrilera"
+    elif "pimienta negra" in term: term = "pimientanegra"
+    elif "pimienta roja" in term: term = "pimientaroja"
+    elif "pimienta verde" in term: term = "pimientaverde"
     else:
         # Limpiar espacios si no cayó en ningún caso especial
         term = term.replace(" ", "")
