@@ -261,61 +261,67 @@ def detectar_categoria(nombre_producto):
 
 def buscar_imagenes(nombre_producto):
     """
-    Busca la imagen Frontal y la Trasera en la carpeta images.
-    Devuelve (path_frontal, path_trasera). Pueden ser None.
+    Busca la imagen Frontal en la carpeta images.
+    Devuelve la ruta (o None si no existe).
     """
     images_dir = os.path.join(current_dir, "images")
     if not os.path.exists(images_dir):
         return None, None
         
-    term = nombre_producto.replace(" ", "").lower()
+    term = nombre_producto.lower()
     
     # --- DICCIONARIO INTELIGENTE PARA CASOS ESPECIALES ---
-    if "sloopy joe" in nombre_producto.lower() or "sloppy" in nombre_producto.lower(): term = "sloppyjoe"
-    elif "sal al malbec" in nombre_producto.lower(): term = "salmalbec"
-    elif "sal negra" in nombre_producto.lower() or "hawaiana" in nombre_producto.lower(): term = "salhawaiana"
-    elif "ajo a las hierbas" in nombre_producto.lower(): term = "ajohierbas"
-    elif "bbq" in nombre_producto.lower() or "barbacoa" in nombre_producto.lower(): term = "barbacoa"
-    elif "bosque y brasas" in nombre_producto.lower(): term = "bosquebrasas"
-    elif "kebab & dip" in nombre_producto.lower() or "kebab" in nombre_producto.lower(): term = "blendkebab"
-    elif "panko" in nombre_producto.lower() or "sesamo y limon" in nombre_producto.lower(): term = "panko"
-    elif "españa profunda" in nombre_producto.lower() or "espana" in nombre_producto.lower(): term = "espanaprofunda"
-    elif "glühwein" in nombre_producto.lower() or "gluhwein" in nombre_producto.lower(): term = "gluhwein"
-    elif "mocktail" in nombre_producto.lower(): term = "botanico"
-    elif "panch" in nombre_producto.lower(): term = "panchphoron"
-    
-    # Limpiar caracteres especiales del término a buscar
+    if "sloopy joe" in term or "sloppy" in term: term = "sloppyjoe"
+    elif "sal al malbec" in term: term = "malbec"
+    elif "sal negra" in term or "hawaiana" in term: term = "hawaiana"
+    elif "ajo a las hierbas" in term: term = "ajohierbas"
+    elif "bbq" in term or "barbacoa" in term: term = "barbacoa"
+    elif "bosque y brasas" in term: term = "bosque"
+    elif "kebab" in term: term = "kebab"
+    elif "panko" in term or "sesamo y limon" in term: term = "sesamo"
+    elif "españa profunda" in term or "espana" in term: term = "espana"
+    elif "glühwein" in term or "gluhwein" in term: term = "gluhwein"
+    elif "mocktail" in term: term = "botanico"
+    elif "panch" in term: term = "panch"
+    elif "criolla deshidratada" in term: term = "criolla"
+    elif "rooibos" in term: term = "rooibos"
+    elif "sal british" in term: term = "british"
+    elif "esvanetian" in term: term = "svanetian"
+    elif "rosas y romero" in term: term = "rosas"
+    elif "del desierto" in term: term = "desierto"
+    elif "vikinga" in term: term = "vikinga"
+    elif "limon y chile" in term: term = "limon_chile"
+    elif "queso" in term: term = "queso"
+    elif "parrilera" in term: term = "parrilera"
+    else:
+        # Limpiar espacios si no cayó en ningún caso especial
+        term = term.replace(" ", "")
+        
     term = term.replace("&", "").replace("(", "").replace(")", "").replace("ñ", "n").replace("ü", "u")
     
-    archivos_encontrados = []
+    # Filtrar archivos
+    archivos_validos = []
     for f in os.listdir(images_dir):
-        if f.endswith(".png") or f.endswith(".jpg"):
-            f_limpio = f.replace("_", "").lower().replace("ñ", "n")
-            if term in f_limpio:
-                archivos_encontrados.append(f)
-                
-    img_frontal = None
-    img_trasera = None
-    
-    for f in archivos_encontrados:
-        nombre_lower = f.lower()
-        if "trasera" in nombre_lower or "back" in nombre_lower:
-            img_trasera = os.path.join(images_dir, f)
-        elif "clean" in nombre_lower or "frontal" in nombre_lower or "color" in nombre_lower:
-            img_frontal = os.path.join(images_dir, f)
+        f_limpio = f.lower().replace("ñ", "n")
+        
+        # Ignorar COMPLETAMENTE cualquier cosa que diga "trasera" o "back"
+        if "trasera" in f_limpio or "back" in f_limpio:
+            continue
             
-    # Si no encontró frontal específica pero hay alguna otra (que no sea trasera), la usa de frontal
-    if not img_frontal:
-        para_frontal = [f for f in archivos_encontrados if "trasera" not in f.lower() and "back" not in f.lower()]
-        if para_frontal:
-            img_frontal = os.path.join(images_dir, para_frontal[0])
+        # Si el término buscado está en el nombre del archivo (limpio de guiones bajos)
+        if term in f_limpio.replace("_", "") or term in f_limpio.replace("_", " "):
+            archivos_validos.append(f)
             
-    # Último recurso: Si solo hay una foto, que sea la frontal
-    if not img_frontal and img_trasera and len(archivos_encontrados) == 1:
-        img_frontal = img_trasera
-        img_trasera = None
+    if not archivos_validos:
+        return None, None
+        
+    # Preferir archivos que digan "clean" o "frontal"
+    for f in archivos_validos:
+        if "clean" in f.lower() or "frontal" in f.lower() or "color" in f.lower() or "premium" in f.lower():
+            return os.path.join(images_dir, f), None
             
-    return img_frontal, img_trasera
+    # Si no, devolver el primero que encuentre
+    return os.path.join(images_dir, archivos_validos[0]), None
 
 # --- ESTADO DEL CARRITO ---
 if "carrito" not in st.session_state:
