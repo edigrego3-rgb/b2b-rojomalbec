@@ -311,8 +311,10 @@ def buscar_imagenes(nombre_producto):
         if "trasera" in f_limpio or "back" in f_limpio:
             continue
             
-        # Si el término buscado está en el nombre del archivo (limpio de guiones bajos)
-        if term in f_limpio.replace("_", "") or term in f_limpio.replace("_", " "):
+        f_sin_espacios = f_limpio.replace("_", "").replace(" ", "")
+        
+        # Si el término buscado está en el nombre del archivo
+        if term in f_sin_espacios or term in f_limpio.replace("_", " "):
             archivos_validos.append(f)
             
     if not archivos_validos:
