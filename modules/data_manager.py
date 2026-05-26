@@ -44,13 +44,13 @@ def load_catalog_data():
         df = pd.DataFrame(raw_data[1:], columns=headers)
         
         # Filtrar solo columnas necesarias para el B2B
-        cols_necesarias = ["Nombre", "Precio_Mayorista", "Precio_Venta"]
+        cols_necesarias = ["Nombre", "Precio_Mayorista", "Precio_Venta", "PVP_Sugerido"]
         for col in cols_necesarias:
             if col not in df.columns:
                 df[col] = 0.0
                 
         # Limpiar números
-        for col in ["Precio_Mayorista", "Precio_Venta"]:
+        for col in ["Precio_Mayorista", "Precio_Venta", "PVP_Sugerido"]:
             df[col] = df[col].astype(str).str.replace(',', '.', regex=False).str.strip()
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.0).astype(float)
             
