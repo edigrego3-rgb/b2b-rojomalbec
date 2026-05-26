@@ -462,15 +462,23 @@ for i, tab in enumerate(tabs):
         cols = st.columns(2)
         for idx, row in df_tab.reset_index(drop=True).iterrows():
             nombre = row["Nombre"]
-            costo_redondeado = redondear_precio(float(row["Precio_Mayorista"]))
+            precio_mayorista = float(row["Precio_Mayorista"])
+            costo_redondeado = redondear_precio(precio_mayorista)
             
             # PVP: Leer directo de la BD (guardado por el simulador del ERP)
             pvp_guardado = float(row.get("PVP_Sugerido", 0))
             if pvp_guardado > 0:
-                pvp_redondeado = redondear_precio(pvp_guardado)
+                pvp_final = pvp_guardado
             else:
-                pvp_redondeado = redondear_precio(float(row.get("Precio_Venta", costo_redondeado * 1.5)))
-            
+                # Si no lo guardaron en la ERP, lo calculamos EN VIVO usando el Markup de la base de datos
+                markup_revendedor = float(row.get("Markup_Revendedor", 0))
+                if markup_revendedor > 0:
+                    pvp_final = precio_mayorista * (1 + markup_revendedor / 100)
+                else:
+                    # Fallback final si tampoco hay markup
+                    pvp_final = precio_mayorista * 1.5
+                    
+            pvp_redondeado = redondear_precio(pvp_final)
             ganancia_neta = pvp_redondeado - costo_redondeado
             
             desc_path = os.path.join(current_dir, "Descripciones_RojoMalbec.md")
