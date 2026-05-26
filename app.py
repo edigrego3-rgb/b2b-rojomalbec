@@ -16,58 +16,230 @@ st.set_page_config(
     page_title="Rojo Malbec B2B | Distribuidores",
     page_icon="🍷",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# --- ESTILO PREMIUM DARK MODE ---
+# --- ESTILO PREMIUM ---
 st.markdown("""
-    <style>
-    [data-testid="stAppViewContainer"] {
-        background-color: #0e1117;
-    }
-    h1, h2, h3 {
-        color: #d4af37;
-    }
-    .product-card {
-        background-color: #1a1a1a;
-        padding: 20px;
-        border-radius: 15px;
-        border-left: 5px solid #d4af37;
-        margin-bottom: 20px;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    .profit-badge {
-        background-color: rgba(0, 255, 0, 0.1);
-        color: #4CAF50;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .banner {
-        background-color: #8b0000;
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-        margin-bottom: 30px;
-        font-weight: bold;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    }
-    .desc-text {
-        font-size: 0.9em;
-        color: #e0e0e0;
-        white-space: pre-wrap;
-    }
-    .stTabs [data-baseweb="tab"] {
-        color: white;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+/* === BASE === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(165deg, #0a0a0f 0%, #111118 50%, #0d0d14 100%);
+    font-family: 'Inter', sans-serif;
+}
+
+/* === HEADER COMPACTO === */
+.header-bar {
+    background: linear-gradient(135deg, #8b0000 0%, #a02020 50%, #8b0000 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(139,0,0,0.3);
+}
+.header-bar h1 {
+    margin: 0; font-size: 1.4em; color: white !important;
+}
+.header-bar span {
+    font-size: 0.8em; opacity: 0.85;
+}
+
+/* === BUSCADOR === */
+[data-testid="stTextInput"] > div > div > input {
+    background-color: #1a1a24 !important;
+    border: 2px solid #2a2a3a !important;
+    border-radius: 12px !important;
+    color: #e0e0e0 !important;
+    padding: 12px 16px !important;
+    font-size: 1em !important;
+}
+[data-testid="stTextInput"] > div > div > input:focus {
+    border-color: #d4af37 !important;
+    box-shadow: 0 0 0 2px rgba(212,175,55,0.2) !important;
+}
+
+/* === TABS ELEGANTES === */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+    background: #12121a;
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+.stTabs [data-baseweb="tab"] {
+    color: #888 !important;
+    border-radius: 8px;
+    padding: 8px 16px !important;
+    font-weight: 600;
+    font-size: 0.85em;
+}
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, #8b0000, #a02020) !important;
+    color: white !important;
+}
+
+/* === TARJETA DE PRODUCTO === */
+.card {
+    background: linear-gradient(145deg, #16161f 0%, #1a1a26 100%);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+    border: 1px solid #22222e;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.card:hover {
+    border-color: #d4af3780;
+    box-shadow: 0 8px 30px rgba(212,175,55,0.08);
+    transform: translateY(-2px);
+}
+
+/* Línea dorada superior */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #d4af37, #f0d060, #d4af37);
+}
+
+/* === NOMBRE PRODUCTO === */
+.prod-name {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 8px 0 12px 0;
+    line-height: 1.3;
+}
+
+/* === PRECIOS === */
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    margin: 10px 0;
+}
+.price-main {
+    font-size: 1.6em;
+    font-weight: 800;
+    color: #d4af37;
+    line-height: 1;
+}
+.price-label {
+    font-size: 0.7em;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+.price-pvp {
+    text-align: right;
+}
+.price-pvp-value {
+    font-size: 1em;
+    font-weight: 600;
+    color: #aaa;
+}
+
+/* === BADGE GANANCIA === */
+.gain-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(76,175,80,0.15), rgba(76,175,80,0.05));
+    color: #66bb6a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85em;
+    border: 1px solid rgba(76,175,80,0.2);
+    margin: 8px 0;
+}
+
+/* === BADGE CARRITO (en tarjeta) === */
+.cart-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: linear-gradient(135deg, #d4af37, #f0d060);
+    color: #111;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85em;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(212,175,55,0.4);
+}
+
+/* === BOTÓN AGREGAR === */
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, #2e7d32, #388e3c) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+}
+.stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #388e3c, #43a047) !important;
+    box-shadow: 0 4px 15px rgba(56,142,60,0.3) !important;
+}
+
+/* === SIDEBAR CARRITO === */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #111118, #0d0d14) !important;
+}
+[data-testid="stSidebar"] h1 {
+    color: #d4af37 !important;
+    font-size: 1.3em !important;
+}
+
+/* === EXPANDER === */
+.streamlit-expanderHeader {
+    font-size: 0.85em !important;
+    color: #aaa !important;
+}
+
+/* === HEADINGS === */
+h1, h2, h3 { color: #d4af37; }
+
+/* === RESPONSIVE: MOBILE === */
+@media (max-width: 768px) {
+    .price-main { font-size: 1.3em; }
+    .prod-name { font-size: 1.05em; }
+    .card { padding: 14px; }
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* === INFO STRIP === */
+.info-strip {
+    background: #12121a;
+    border: 1px solid #1e1e2a;
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82em;
+    color: #aaa;
+}
+.info-strip b { color: #d4af37; }
+
+/* Ocultar label vacío de tabs */
+.stTabs [data-baseweb="tab-list"] button[role="tab"] p { margin: 0; }
+</style>
+""", unsafe_allow_html=True)
 
 # --- FUNCIONES AUXILIARES ---
 def detectar_categoria(nombre_producto):
@@ -109,7 +281,7 @@ def buscar_imagenes(nombre_producto):
     elif "panko" in nombre_producto.lower() or "sesamo y limon" in nombre_producto.lower(): term = "panko"
     elif "españa profunda" in nombre_producto.lower() or "espana" in nombre_producto.lower(): term = "espanaprofunda"
     elif "glühwein" in nombre_producto.lower() or "gluhwein" in nombre_producto.lower(): term = "gluhwein"
-    elif "mocktail" in nombre_producto.lower(): term = "botanico" # o lo que haya
+    elif "mocktail" in nombre_producto.lower(): term = "botanico"
     elif "panch" in nombre_producto.lower(): term = "panchphoron"
     
     # Limpiar caracteres especiales del término a buscar
@@ -149,30 +321,44 @@ def buscar_imagenes(nombre_producto):
 if "carrito" not in st.session_state:
     st.session_state.carrito = {}
 
-# --- HEADER Y BANNER ---
-st.title("🍷 Rojo Malbec | Portal Mayorista")
+# --- HEADER COMPACTO ---
+total_items = sum(item['cantidad'] for item in st.session_state.carrito.values())
+st.markdown(f"""
+<div class='header-bar'>
+    <div>
+        <h1>🍷 Rojo Malbec</h1>
+        <span>Portal Mayorista · Catálogo B2B</span>
+    </div>
+    <div style='text-align:right;'>
+        <span style='font-size:1.5em;'>🛒 {total_items}</span><br>
+        <span>productos</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- INFO STRIP ---
 st.markdown("""
-<div class='banner'>
-    🌿 CALIDAD PREMIUM ASEGURADA: Producimos a pedido para garantizar máxima frescura. 
-    <br>Tiempo estimado de elaboración y envío: 7 días hábiles.
+<div class='info-strip'>
+    <span>🌿 Producción a pedido · Frescura garantizada</span>
+    <b>Envío: 7 días hábiles</b>
 </div>
 """, unsafe_allow_html=True)
 
 # --- CARGAR CATÁLOGO ---
-with st.spinner("Actualizando catálogo y precios..."):
+with st.spinner("Actualizando catálogo..."):
     df_catalogo = load_catalog_data()
 
 if df_catalogo.empty:
-    st.error("No se pudo cargar el catálogo. Por favor contacte a administración.")
+    st.error("No se pudo cargar el catálogo. Contacte a administración.")
     st.stop()
 
 df_catalogo["Categoria"] = df_catalogo["Nombre"].apply(detectar_categoria)
 
 # --- SIDEBAR: CARRITO Y CHECKOUT ---
-st.sidebar.title("🛒 Tu Pedido")
+st.sidebar.markdown("## 🛒 Tu Pedido")
 
 if not st.session_state.carrito:
-    st.sidebar.info("Tu pedido está vacío. Agregá productos desde el catálogo.")
+    st.sidebar.info("Agregá productos desde el catálogo.")
 else:
     total_pedido = 0
     items_carrito = []
@@ -206,16 +392,16 @@ else:
             })
 
     if items_carrito:
-        st.sidebar.subheader(f"Total: $ {total_pedido:,}")
+        st.sidebar.markdown(f"### 💰 Total: $ {total_pedido:,}")
         
-        st.sidebar.markdown("### 📝 Datos de Envío")
+        st.sidebar.markdown("#### 📝 Datos de Envío")
         nombre_cliente = st.sidebar.text_input("Nombre del Local / Distribuidor")
         cuit = st.sidebar.text_input("CUIT (Opcional)")
         direccion = st.sidebar.text_input("Dirección de Envío")
         
-        if st.sidebar.button("✅ FINALIZAR Y ENVIAR PEDIDO", type="primary", use_container_width=True):
+        if st.sidebar.button("✅ ENVIAR PEDIDO POR WHATSAPP", type="primary", use_container_width=True):
             if not nombre_cliente:
-                st.sidebar.error("Por favor ingresá tu nombre.")
+                st.sidebar.error("Ingresá tu nombre.")
             else:
                 link_wa = generar_mensaje_whatsapp(
                     carrito=items_carrito,
@@ -224,14 +410,21 @@ else:
                     datos_cliente={"nombre": nombre_cliente, "cuit": cuit, "direccion": direccion}
                 )
                 st.sidebar.success("¡Pedido listo!")
-                st.sidebar.markdown(f"[📲 Haz clic aquí para enviar por WhatsApp]({link_wa})", unsafe_allow_html=True)
-                if st.sidebar.button("Limpiar Carrito"):
+                st.sidebar.markdown(f"[📲 Abrir WhatsApp]({link_wa})", unsafe_allow_html=True)
+                if st.sidebar.button("🗑️ Vaciar Carrito"):
                     st.session_state.carrito = {}
                     st.rerun()
 
-# --- CATÁLOGO DE PRODUCTOS ---
-search = st.text_input("🔍 Buscar blend...")
+# --- BUSCADOR + BOTÓN CARRITO ---
+col_search, col_cart_btn = st.columns([5, 1])
+with col_search:
+    search = st.text_input("🔍 Buscar producto...", placeholder="Ej: Sal, Curry, Vital...", label_visibility="collapsed")
+with col_cart_btn:
+    if st.button(f"🛒 ({total_items})", use_container_width=True, type="primary"):
+        st.session_state["sidebar_state"] = "expanded"
+        st.rerun()
 
+# --- CATÁLOGO POR PESTAÑAS ---
 categorias = ["🏠 Todos", "🧂 Sales", "🌿 Blends", "💚 Vital", "🍵 Tés", "🍹 Mocktails", "🌶️ Pimientas"]
 tabs = st.tabs(categorias)
 
@@ -249,13 +442,20 @@ for i, tab in enumerate(tabs):
         if df_tab.empty:
             st.info("No hay productos en esta categoría.")
             continue
-            
-        # Grilla de 3 columnas
-        cols = st.columns(3)
+        
+        # --- GRILLA DE 2 COLUMNAS (mejor para mobile) ---
+        cols = st.columns(2)
         for idx, row in df_tab.reset_index(drop=True).iterrows():
             nombre = row["Nombre"]
             costo_redondeado = redondear_precio(float(row["Precio_Mayorista"]))
-            pvp_redondeado = redondear_precio(float(row["Precio_Venta"]))
+            
+            # PVP: Leer directo de la BD (guardado por el simulador del ERP)
+            pvp_guardado = float(row.get("PVP_Sugerido", 0))
+            if pvp_guardado > 0:
+                pvp_redondeado = redondear_precio(pvp_guardado)
+            else:
+                pvp_redondeado = redondear_precio(float(row.get("Precio_Venta", costo_redondeado * 1.5)))
+            
             ganancia_neta = pvp_redondeado - costo_redondeado
             
             desc_path = os.path.join(current_dir, "Descripciones_RojoMalbec.md")
@@ -263,54 +463,66 @@ for i, tab in enumerate(tabs):
             
             img_front, img_back = buscar_imagenes(nombre)
             
-            col_idx = idx % 3
+            qty_actual = st.session_state.carrito.get(nombre, {}).get("cantidad", 0)
+            
+            col_idx = idx % 2
             with cols[col_idx]:
-                with st.container():
-                    st.markdown("<div class='product-card'>", unsafe_allow_html=True)
-                    
-                    # Imágenes (Frontal y Trasera juntas)
-                    if img_front and img_back:
-                        img_col1, img_col2 = st.columns([2, 1])
-                        with img_col1:
-                            st.image(img_front, use_container_width=True)
-                        with img_col2:
-                            st.image(img_back, use_container_width=True)
-                    elif img_front:
+                # Badge de cantidad en carrito
+                badge_html = f"<div class='cart-badge'>{qty_actual}</div>" if qty_actual > 0 else ""
+                
+                st.markdown(f"""
+                <div class='card'>
+                    {badge_html}
+                    <div class='prod-name'>{nombre}</div>
+                    <div class='price-row'>
+                        <div>
+                            <div class='price-label'>Tu costo</div>
+                            <div class='price-main'>$ {costo_redondeado:,}</div>
+                        </div>
+                        <div class='price-pvp'>
+                            <div class='price-label'>PVP sugerido</div>
+                            <div class='price-pvp-value'>$ {pvp_redondeado:,}</div>
+                        </div>
+                    </div>
+                    <div class='gain-badge'>📈 Ganancia: $ {ganancia_neta:,}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Imágenes (Frontal grande + Trasera chica)
+                if img_front and img_back:
+                    img_col1, img_col2 = st.columns([3, 2])
+                    with img_col1:
                         st.image(img_front, use_container_width=True)
-                    
-                    # Info Básica
-                    st.markdown(f"""
-                        <h3 style='margin-top:10px;'>{nombre}</h3>
-                        <p style='margin-bottom:5px;'><b>Costo Compra:</b> $ {costo_redondeado:,}</p>
-                        <p style='margin-bottom:0;'><b>Precio Sugerido:</b> $ {pvp_redondeado:,}</p>
-                        <div class='profit-badge'>Ganancia Neta: $ {ganancia_neta:,}</div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Expansor para la descripción limpia
-                    with st.expander("Ver descripción e ingredientes 🔽"):
-                        st.markdown(f"<div class='desc-text'>{descripcion}</div>", unsafe_allow_html=True)
-                    
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    
-                    # Controles de Carrito
-                    c1, c2, c3 = st.columns([1, 1, 1])
-                    qty_actual = st.session_state.carrito.get(nombre, {}).get("cantidad", 0)
-                    
+                    with img_col2:
+                        st.image(img_back, use_container_width=True)
+                elif img_front:
+                    st.image(img_front, use_container_width=True)
+                
+                # Descripción colapsable
+                with st.expander("🌿 Ingredientes y maridaje"):
+                    st.markdown(f"<div style='font-size:0.88em; color:#ccc; white-space:pre-wrap;'>{descripcion}</div>", unsafe_allow_html=True)
+                
+                # --- CONTROLES DE CARRITO MEJORADOS ---
+                if qty_actual == 0:
+                    # Solo botón de agregar
+                    if st.button(f"🛒 AGREGAR", key=f"add_{cat_actual}_{idx}", use_container_width=True, type="primary"):
+                        st.session_state.carrito[nombre] = {"cantidad": 1, "precio": costo_redondeado}
+                        st.rerun()
+                else:
+                    # Controles ➖ cantidad ➕
+                    c1, c2, c3 = st.columns([1, 2, 1])
                     with c1:
                         if st.button("➖", key=f"minus_{cat_actual}_{idx}", use_container_width=True):
-                            if qty_actual > 0:
-                                st.session_state.carrito[nombre]['cantidad'] -= 1
-                                if st.session_state.carrito[nombre]['cantidad'] == 0:
-                                    del st.session_state.carrito[nombre]
-                                st.rerun()
+                            st.session_state.carrito[nombre]['cantidad'] -= 1
+                            if st.session_state.carrito[nombre]['cantidad'] == 0:
+                                del st.session_state.carrito[nombre]
+                            st.rerun()
                     with c2:
-                        st.markdown(f"<div style='text-align:center; padding-top:5px; font-weight:bold; font-size:1.2em;'>{qty_actual}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align:center; padding:6px; font-weight:800; font-size:1.2em; color:#d4af37; background:#1a1a24; border-radius:8px;'>{qty_actual} en pedido</div>", unsafe_allow_html=True)
                     with c3:
                         if st.button("➕", key=f"plus_{cat_actual}_{idx}", use_container_width=True, type="primary"):
-                            if nombre not in st.session_state.carrito:
-                                st.session_state.carrito[nombre] = {"cantidad": 1, "precio": costo_redondeado}
-                            else:
-                                st.session_state.carrito[nombre]['cantidad'] += 1
+                            st.session_state.carrito[nombre]['cantidad'] += 1
                             st.rerun()
-                            
-                    st.markdown("</div>", unsafe_allow_html=True)
+                
+                # Separador visual entre tarjetas
+                st.markdown("<div style='margin-bottom:10px;'></div>", unsafe_allow_html=True)
