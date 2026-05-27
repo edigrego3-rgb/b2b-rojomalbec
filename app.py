@@ -12,11 +12,14 @@ from modules.data_manager import load_catalog_data, guardar_visibilidad
 from modules.utils import redondear_precio, extraer_descripcion, generar_mensaje_whatsapp
 
 # --- CONFIGURACIÓN DE PÁGINA ---
+if "sidebar_state" not in st.session_state:
+    st.session_state.sidebar_state = "collapsed"
+
 st.set_page_config(
     page_title="Rojo Malbec B2B | Distribuidores",
     page_icon="🍷",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state=st.session_state.sidebar_state
 )
 
 # --- ESTILO PREMIUM ---
@@ -636,6 +639,7 @@ for i, tab in enumerate(tabs):
                     # Solo botón de agregar
                     if st.button(f"🛒 AGREGAR", key=f"add_{cat_actual}_{idx}", use_container_width=True, type="primary"):
                         st.session_state.carrito[nombre] = {"cantidad": 1, "precio": costo_redondeado}
+                        st.session_state.sidebar_state = "expanded"
                         st.rerun()
                 else:
                     # Controles ➖ cantidad ➕
@@ -651,6 +655,7 @@ for i, tab in enumerate(tabs):
                     with c3:
                         if st.button("➕", key=f"plus_{cat_actual}_{idx}", use_container_width=True, type="primary"):
                             st.session_state.carrito[nombre]['cantidad'] += 1
+                            st.session_state.sidebar_state = "expanded"
                             st.rerun()
                 
                 # Separador visual entre tarjetas
