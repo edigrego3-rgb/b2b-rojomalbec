@@ -33,9 +33,11 @@ st.markdown("""
 /* Ocultar botones de Streamlit Cloud */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
-[data-testid="manage-app-button"] {display: none;}
+[data-testid="manage-app-button"] {display: none !important;}
 .stDeployButton {display: none !important;}
-header[data-testid="stHeader"] {background: transparent;}
+header[data-testid="stHeader"] {display: none !important;}
+div[data-testid="stToolbar"] {display: none !important;}
+.viewerBadge_container__1QSob, .viewerBadge_link__1S137, #manage-app-button, .manage-app-badge {display: none !important;}
 
 /* === HEADER COMPACTO === */
 .header-bar {
