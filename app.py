@@ -374,18 +374,33 @@ if "carrito" not in st.session_state:
 
 # --- HEADER COMPACTO ---
 total_items = sum(item['cantidad'] for item in st.session_state.carrito.values())
-st.markdown(f"""
-<div class='header-bar'>
-    <div>
-        <h1>🍷 Rojo Malbec</h1>
-        <span>Portal Mayorista · Catálogo B2B</span>
-    </div>
-    <div style='text-align:right;'>
-        <span style='font-size:1.5em;'>🛒 {total_items}</span><br>
-        <span>productos</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+
+col_logo, col_titulo, col_cart = st.columns([1, 4, 2])
+with col_logo:
+    # Intentar cargar el logo si existe en la carpeta
+    ruta_logo = os.path.join(current_dir, "logo.png")
+    if os.path.exists(ruta_logo):
+        st.image(ruta_logo, use_container_width=True)
+    else:
+        st.markdown("<h1 style='text-align:center;'>🍷</h1>", unsafe_allow_html=True)
+
+with col_titulo:
+    st.markdown("""
+        <div style='padding-top: 10px;'>
+            <h1 style='margin:0; font-size:2rem; color:#d4af37;'>Rojo Malbec</h1>
+            <span style='color:#a0a0b0; font-size:1.1rem;'>Portal Mayorista · B2B</span>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col_cart:
+    st.markdown(f"""
+        <div style='text-align:right; padding-top: 15px;'>
+            <span style='font-size:1.8em; font-weight:800; color:#d4af37;'>🛒 {total_items}</span><br>
+            <span style='color:#a0a0b0;'>productos</span>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<hr style='margin-top:0; border-color:#333;'>", unsafe_allow_html=True)
 
 # --- CARRITO INTEGRADO ---
 if total_items > 0:
