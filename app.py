@@ -33,8 +33,6 @@ st.markdown("""
 /* Ocultar TODO rastro de Streamlit Cloud y GitHub */
 #MainMenu {visibility: hidden !important;}
 footer {visibility: hidden !important; display: none !important;}
-header {visibility: hidden !important; display: none !important;}
-[data-testid="stHeader"] {display: none !important;}
 [data-testid="stToolbar"] {display: none !important;}
 [data-testid="manage-app-button"] {display: none !important;}
 [data-testid="viewerBadge"] {display: none !important;}
