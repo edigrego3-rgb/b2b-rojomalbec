@@ -387,6 +387,67 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+# --- CARRITO INTEGRADO ---
+if total_items > 0:
+    with st.expander(f"🛒 VER MI PEDIDO ({total_items} productos)", expanded=False):
+        st.markdown("### 📝 Resumen de tu pedido")
+        total_pedido = 0
+        items_carrito = []
+        
+        for nombre, item_data in st.session_state.carrito.items():
+            if item_data['cantidad'] > 0:
+                subtotal = item_data['cantidad'] * item_data['precio']
+                total_pedido += subtotal
+                
+                st.markdown(f"**{nombre}**")
+                cols_cart = st.columns([2, 1, 1])
+                with cols_cart[0]:
+                    st.write(f"{item_data['cantidad']} un. x ${item_data['precio']:,}")
+                with cols_cart[1]:
+                    if st.button("➖", key=f"del_{nombre}_cart_main"):
+                        st.session_state.carrito[nombre]['cantidad'] -= 1
+                        if st.session_state.carrito[nombre]['cantidad'] <= 0:
+                            del st.session_state.carrito[nombre]
+                        st.rerun()
+                with cols_cart[2]:
+                    if st.button("➕", key=f"add_{nombre}_cart_main"):
+                        st.session_state.carrito[nombre]['cantidad'] += 1
+                        st.rerun()
+                st.markdown("---")
+                
+                items_carrito.append({
+                    'nombre': nombre,
+                    'cantidad': item_data['cantidad'],
+                    'precio': item_data['precio'],
+                    'subtotal': subtotal
+                })
+        
+        st.markdown(f"### 💰 Total a pagar: $ {total_pedido:,}")
+        
+        st.markdown("#### Datos de Envío")
+        nombre_cliente = st.text_input("Nombre del Local / Distribuidor", key="cliente_nombre")
+        cuit = st.text_input("CUIT (Opcional)", key="cliente_cuit")
+        direccion = st.text_input("Dirección de Envío", key="cliente_dir")
+        
+        c_enviar, c_vaciar = st.columns([3, 1])
+        with c_enviar:
+            if st.button("✅ ENVIAR PEDIDO POR WHATSAPP", type="primary", use_container_width=True):
+                if not nombre_cliente:
+                    st.error("Ingresá tu nombre antes de enviar.")
+                else:
+                    link_wa = generar_mensaje_whatsapp(
+                        carrito=items_carrito,
+                        total_pedido=total_pedido,
+                        telefono="5493544308380",
+                        datos_cliente={"nombre": nombre_cliente, "cuit": cuit, "direccion": direccion}
+                    )
+                    st.success("¡Pedido listo para enviar!")
+                    st.markdown(f"<a href='{link_wa}' target='_blank' style='display:block; text-align:center; background-color:#25D366; color:white; padding:12px; border-radius:8px; font-weight:bold; text-decoration:none;'>📲 ABRIR WHATSAPP</a>", unsafe_allow_html=True)
+        with c_vaciar:
+            if st.button("🗑️ Vaciar", use_container_width=True):
+                st.session_state.carrito = {}
+                st.rerun()
+
 # --- INFO STRIP ---
 st.markdown("""
 <div class='info-strip'>
@@ -485,75 +546,8 @@ if st.session_state.admin_mode:
 if not st.session_state.admin_mode:
     df_catalogo = df_catalogo[df_catalogo["Visible_B2B"] == True]
 
-# --- SIDEBAR: CARRITO Y CHECKOUT ---
-st.sidebar.markdown("## 🛒 Tu Pedido")
-
-if not st.session_state.carrito:
-    st.sidebar.info("Agregá productos desde el catálogo.")
-else:
-    total_pedido = 0
-    items_carrito = []
-    
-    for nombre, item_data in st.session_state.carrito.items():
-        if item_data['cantidad'] > 0:
-            subtotal = item_data['cantidad'] * item_data['precio']
-            total_pedido += subtotal
-            
-            st.sidebar.markdown(f"**{nombre}**")
-            cols_cart = st.sidebar.columns([2, 1, 1])
-            with cols_cart[0]:
-                st.write(f"{item_data['cantidad']} un. x ${item_data['precio']:,}")
-            with cols_cart[1]:
-                if st.button("➖", key=f"del_{nombre}"):
-                    st.session_state.carrito[nombre]['cantidad'] -= 1
-                    if st.session_state.carrito[nombre]['cantidad'] <= 0:
-                        del st.session_state.carrito[nombre]
-                    st.rerun()
-            with cols_cart[2]:
-                if st.button("➕", key=f"add_{nombre}_cart"):
-                    st.session_state.carrito[nombre]['cantidad'] += 1
-                    st.rerun()
-            st.sidebar.markdown("---")
-            
-            items_carrito.append({
-                'nombre': nombre,
-                'cantidad': item_data['cantidad'],
-                'precio': item_data['precio'],
-                'subtotal': subtotal
-            })
-
-    if items_carrito:
-        st.sidebar.markdown(f"### 💰 Total: $ {total_pedido:,}")
-        
-        st.sidebar.markdown("#### 📝 Datos de Envío")
-        nombre_cliente = st.sidebar.text_input("Nombre del Local / Distribuidor")
-        cuit = st.sidebar.text_input("CUIT (Opcional)")
-        direccion = st.sidebar.text_input("Dirección de Envío")
-        
-        if st.sidebar.button("✅ ENVIAR PEDIDO POR WHATSAPP", type="primary", use_container_width=True):
-            if not nombre_cliente:
-                st.sidebar.error("Ingresá tu nombre.")
-            else:
-                link_wa = generar_mensaje_whatsapp(
-                    carrito=items_carrito,
-                    total_pedido=total_pedido,
-                    telefono="5493544308380",
-                    datos_cliente={"nombre": nombre_cliente, "cuit": cuit, "direccion": direccion}
-                )
-                st.sidebar.success("¡Pedido listo!")
-                st.sidebar.markdown(f"[📲 Abrir WhatsApp]({link_wa})", unsafe_allow_html=True)
-                if st.sidebar.button("🗑️ Vaciar Carrito"):
-                    st.session_state.carrito = {}
-                    st.rerun()
-
-# --- BUSCADOR + BOTÓN CARRITO ---
-col_search, col_cart_btn = st.columns([5, 1])
-with col_search:
-    search = st.text_input("🔍 Buscar producto...", placeholder="Ej: Sal, Curry, Vital...", label_visibility="collapsed")
-with col_cart_btn:
-    if st.button(f"🛒 ({total_items})", use_container_width=True, type="primary"):
-        st.session_state["sidebar_state"] = "expanded"
-        st.rerun()
+# --- BUSCADOR ---
+search = st.text_input("🔍 Buscar producto...", placeholder="Ej: Sal, Curry, Vital...", label_visibility="collapsed")
 
 # --- CATÁLOGO POR PESTAÑAS ---
 categorias = ["🏠 Todos", "🧂 Sales", "🌿 Blends", "💚 Vital", "🍵 Tés", "🍹 Mocktails", "🌶️ Pimientas"]
