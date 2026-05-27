@@ -30,14 +30,17 @@ st.markdown("""
     font-family: 'Inter', sans-serif;
 }
 
-/* Ocultar botones de Streamlit Cloud */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-[data-testid="manage-app-button"] {display: none !important;}
-.stDeployButton {display: none !important;}
+/* Ocultar TODO rastro de Streamlit Cloud y GitHub */
+#MainMenu {visibility: hidden !important;}
+footer {visibility: hidden !important; display: none !important;}
 header[data-testid="stHeader"] {display: none !important;}
 div[data-testid="stToolbar"] {display: none !important;}
-.viewerBadge_container__1QSob, .viewerBadge_link__1S137, #manage-app-button, .manage-app-badge {display: none !important;}
+[data-testid="manage-app-button"] {display: none !important;}
+[data-testid="viewerBadge"] {display: none !important;}
+.stDeployButton {display: none !important;}
+.viewerBadge_container__1QSob, .viewerBadge_link__1S137, .manage-app-badge {display: none !important;}
+a[href*="streamlit.io"], a[href*="github.com"] {display: none !important;}
+iframe[src*="streamlit"] {display: none !important;}
 
 /* === HEADER COMPACTO === */
 .header-bar {
