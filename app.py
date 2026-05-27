@@ -30,6 +30,13 @@ st.markdown("""
     font-family: 'Inter', sans-serif;
 }
 
+/* Ocultar botones de Streamlit Cloud */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+[data-testid="manage-app-button"] {display: none;}
+.stDeployButton {display: none !important;}
+header[data-testid="stHeader"] {background: transparent;}
+
 /* === HEADER COMPACTO === */
 .header-bar {
     background: linear-gradient(135deg, #8b0000 0%, #a02020 50%, #8b0000 100%);
