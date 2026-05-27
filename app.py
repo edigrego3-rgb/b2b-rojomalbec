@@ -8,7 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
-from modules.data_manager import load_catalog_data
+from modules.data_manager import load_catalog_data, guardar_visibilidad
 from modules.utils import redondear_precio, extraer_descripcion, generar_mensaje_whatsapp
 
 # --- CONFIGURACIÓN DE PÁGINA ---
@@ -238,6 +238,25 @@ h1, h2, h3 { color: #d4af37; }
 
 /* Ocultar label vacío de tabs */
 .stTabs [data-baseweb="tab-list"] button[role="tab"] p { margin: 0; }
+
+/* === ADMIN PANEL === */
+.admin-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid #d4af3740;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+.admin-header h3 {
+    color: #d4af37 !important;
+    margin: 0 0 4px 0;
+    font-size: 1.1em;
+}
+.admin-header p {
+    color: #888;
+    margin: 0;
+    font-size: 0.85em;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -368,6 +387,86 @@ if df_catalogo.empty:
     st.stop()
 
 df_catalogo["Categoria"] = df_catalogo["Nombre"].apply(detectar_categoria)
+
+# --- PANEL ADMIN (protegido con clave) ---
+if "admin_mode" not in st.session_state:
+    st.session_state.admin_mode = False
+
+col_admin_spacer, col_admin_btn = st.columns([6, 1])
+with col_admin_btn:
+    if st.button("⚙️", use_container_width=True, help="Panel de administración"):
+        st.session_state.show_admin_login = not st.session_state.get("show_admin_login", False)
+        if st.session_state.admin_mode:
+            st.session_state.admin_mode = False
+            st.session_state.show_admin_login = False
+        st.rerun()
+
+if st.session_state.get("show_admin_login", False) and not st.session_state.admin_mode:
+    with st.container():
+        st.markdown("<div class='admin-header'><h3>🔐 Acceso Administrador</h3><p>Ingresá tu clave para gestionar el catálogo</p></div>", unsafe_allow_html=True)
+        clave = st.text_input("Clave", type="password", key="admin_pass")
+        if st.button("Ingresar", type="primary"):
+            if clave == "Livia2112":
+                st.session_state.admin_mode = True
+                st.session_state.show_admin_login = False
+                st.rerun()
+            else:
+                st.error("❌ Clave incorrecta")
+
+if st.session_state.admin_mode:
+    st.markdown("<div class='admin-header'><h3>⚙️ Panel de Administración</h3><p>Seleccioná los productos que querés mostrar en el catálogo</p></div>", unsafe_allow_html=True)
+    
+    todos_los_nombres = df_catalogo["Nombre"].tolist()
+    nombres_visibles_actuales = df_catalogo[df_catalogo["Visible_B2B"] == True]["Nombre"].tolist()
+    
+    # Botones rápidos
+    col_sel_all, col_desel_all, col_guardar_vis = st.columns(3)
+    with col_sel_all:
+        if st.button("✅ Seleccionar Todos", use_container_width=True):
+            st.session_state.productos_seleccionados = todos_los_nombres
+            st.rerun()
+    with col_desel_all:
+        if st.button("❌ Deseleccionar Todos", use_container_width=True):
+            st.session_state.productos_seleccionados = []
+            st.rerun()
+    
+    # Inicializar selección
+    if "productos_seleccionados" not in st.session_state:
+        st.session_state.productos_seleccionados = nombres_visibles_actuales
+    
+    # Agrupar por categoría para que sea más fácil de gestionar
+    st.markdown("---")
+    categorias_admin = df_catalogo.groupby("Categoria")
+    for cat_name, cat_df in categorias_admin:
+        with st.expander(f"{cat_name} ({len(cat_df)} productos)", expanded=False):
+            for _, row_admin in cat_df.iterrows():
+                nombre_prod = row_admin["Nombre"]
+                checked = nombre_prod in st.session_state.productos_seleccionados
+                if st.checkbox(nombre_prod, value=checked, key=f"vis_{nombre_prod}"):
+                    if nombre_prod not in st.session_state.productos_seleccionados:
+                        st.session_state.productos_seleccionados.append(nombre_prod)
+                else:
+                    if nombre_prod in st.session_state.productos_seleccionados:
+                        st.session_state.productos_seleccionados.remove(nombre_prod)
+    
+    st.markdown("---")
+    n_seleccionados = len(st.session_state.productos_seleccionados)
+    st.info(f"📊 Mostrando **{n_seleccionados}** de **{len(todos_los_nombres)}** productos")
+    
+    with col_guardar_vis:
+        if st.button("💾 GUARDAR", type="primary", use_container_width=True):
+            exito = guardar_visibilidad(st.session_state.productos_seleccionados, todos_los_nombres)
+            if exito:
+                st.success("✅ ¡Catálogo actualizado! Los cambios se verán en unos segundos.")
+                st.rerun()
+            else:
+                st.error("Error al guardar. Intentá de nuevo.")
+    
+    st.markdown("---")
+
+# --- FILTRAR PRODUCTOS VISIBLES (para visitantes) ---
+if not st.session_state.admin_mode:
+    df_catalogo = df_catalogo[df_catalogo["Visible_B2B"] == True]
 
 # --- SIDEBAR: CARRITO Y CHECKOUT ---
 st.sidebar.markdown("## 🛒 Tu Pedido")
