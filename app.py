@@ -419,14 +419,17 @@ if total_items > 0:
                 with cols_cart[0]:
                     st.write(f"{item_data['cantidad']} un. x ${item_data['precio']:,}")
                 with cols_cart[1]:
-                    if st.button("➖", key=f"del_{nombre}_cart_main"):
-                        st.session_state.carrito[nombre]['cantidad'] -= 1
-                        if st.session_state.carrito[nombre]['cantidad'] <= 0:
+                    opciones_cart = list(range(0, 101))
+                    if item_data['cantidad'] not in opciones_cart:
+                        opciones_cart.append(item_data['cantidad'])
+                        opciones_cart.sort()
+                        
+                    new_qty = st.selectbox("Unidades", options=opciones_cart, index=opciones_cart.index(item_data['cantidad']), key=f"cart_{nombre}", label_visibility="collapsed")
+                    if new_qty != item_data['cantidad']:
+                        if new_qty == 0:
                             del st.session_state.carrito[nombre]
-                        st.rerun()
-                with cols_cart[2]:
-                    if st.button("➕", key=f"add_{nombre}_cart_main"):
-                        st.session_state.carrito[nombre]['cantidad'] += 1
+                        else:
+                            st.session_state.carrito[nombre]['cantidad'] = new_qty
                         st.rerun()
                 st.markdown("---")
                 
@@ -645,27 +648,32 @@ for i, tab in enumerate(tabs):
                 
                 # --- CONTROLES DE CARRITO MEJORADOS ---
                 if qty_actual == 0:
-                    # Solo botón de agregar
-                    if st.button(f"🛒 AGREGAR", key=f"add_{cat_actual}_{idx}", use_container_width=True, type="primary"):
-                        st.session_state.carrito[nombre] = {"cantidad": 1, "precio": costo_redondeado}
-                        st.session_state.sidebar_state = "expanded"
-                        st.rerun()
+                    # Selector de cantidad + botón de agregar
+                    col_qty, col_btn = st.columns([1, 2])
+                    with col_qty:
+                        cant_elegida = st.selectbox("Cantidad", options=list(range(1, 101)), index=0, key=f"selqty_{cat_actual}_{idx}", label_visibility="collapsed")
+                    with col_btn:
+                        if st.button(f"🛒 AGREGAR ({cant_elegida} un.)", key=f"add_{cat_actual}_{idx}", use_container_width=True, type="primary"):
+                            st.session_state.carrito[nombre] = {"cantidad": cant_elegida, "precio": costo_redondeado}
+                            st.rerun()
                 else:
-                    # Controles ➖ cantidad ➕
-                    c1, c2, c3 = st.columns([1, 2, 1])
-                    with c1:
-                        if st.button("➖", key=f"minus_{cat_actual}_{idx}", use_container_width=True):
-                            st.session_state.carrito[nombre]['cantidad'] -= 1
-                            if st.session_state.carrito[nombre]['cantidad'] == 0:
-                                del st.session_state.carrito[nombre]
+                    # Ya está en el carrito
+                    st.markdown(f"<div style='text-align:center; padding:6px; font-weight:800; font-size:1.1em; color:#d4af37; background:#1a1a24; border-radius:8px; margin-bottom:8px;'>{qty_actual} en pedido</div>", unsafe_allow_html=True)
+                    
+                    opciones_qty = list(range(1, 101))
+                    idx_actual = opciones_qty.index(qty_actual) if qty_actual in opciones_qty else 0
+                    
+                    col_qty, col_btn = st.columns([1, 1])
+                    with col_qty:
+                        nueva_cant = st.selectbox("Cambiar cantidad", options=opciones_qty, index=idx_actual, key=f"qty_{cat_actual}_{idx}", label_visibility="collapsed")
+                    with col_btn:
+                        if st.button("✅ Actualizar", key=f"upd_{cat_actual}_{idx}", use_container_width=True):
+                            st.session_state.carrito[nombre]['cantidad'] = nueva_cant
                             st.rerun()
-                    with c2:
-                        st.markdown(f"<div style='text-align:center; padding:6px; font-weight:800; font-size:1.2em; color:#d4af37; background:#1a1a24; border-radius:8px;'>{qty_actual} en pedido</div>", unsafe_allow_html=True)
-                    with c3:
-                        if st.button("➕", key=f"plus_{cat_actual}_{idx}", use_container_width=True, type="primary"):
-                            st.session_state.carrito[nombre]['cantidad'] += 1
-                            st.session_state.sidebar_state = "expanded"
-                            st.rerun()
+                    
+                    if st.button("🗑️ Quitar del pedido", key=f"del_{cat_actual}_{idx}", use_container_width=True):
+                        del st.session_state.carrito[nombre]
+                        st.rerun()
                 
                 # Separador visual entre tarjetas
                 st.markdown("<div style='margin-bottom:10px;'></div>", unsafe_allow_html=True)
