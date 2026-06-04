@@ -97,7 +97,7 @@ El humo es el lenguaje más antiguo de la humanidad. Este blend es un puente hac
 
 ---
 
-## Sal de Limón y Chile (Suave) 🍋🌶️
+## Sal Marina de Limón y Chile (Suave) 🍋🌶️
 
 🍋 SAL MARINA CON LIMÓN & CHILE — Sal Saborizada de Autor · Edición Sales Gourmet · Rojo Malbec
 
