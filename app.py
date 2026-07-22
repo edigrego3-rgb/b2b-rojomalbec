@@ -280,20 +280,41 @@ h1, h2, h3 { color: #d4af37; }
 # --- FUNCIONES AUXILIARES ---
 def detectar_categoria(nombre_producto):
     nombre = str(nombre_producto).lower()
-    if "sal " in nombre or nombre.startswith("sal"):
+    # Separar en palabras para evitar falsos positivos (ej: "crocante" contiene "te")
+    palabras = nombre.replace("-", " ").split()
+    
+    # 1. Sales
+    if "sal" in palabras or nombre.startswith("sal "):
         return "🧂 Sales"
-    elif "té " in nombre or nombre.startswith("te ") or "pu-erh" in nombre or "puerh" in nombre or "rooibos" in nombre or "karak" in nombre or "zoco" in nombre:
+    # 2. Tés — verificar por palabra completa o keywords específicos
+    es_te = ("te" in palabras or "té" in palabras or 
+             "pu" in palabras or "erh" in palabras or
+             "puerh" in palabras or
+             "rooibos" in palabras or 
+             "karak" in palabras or 
+             "zoco" in palabras)
+    if es_te:
         return "🍵 Tés"
-    elif "vital" in nombre:
+    # 3. Vital
+    if "vital" in palabras:
         return "💚 Vital"
-    elif "blend" in nombre or "bbq" in nombre or "curry" in nombre or "baharat" in nombre or "masala" in nombre or "joe" in nombre or "ranch" in nombre or "pesto" in nombre or "jerk" in nombre or "panko" in nombre or "criolla" in nombre or "muddica" in nombre or "nanami" in nombre or "panch phoron" in nombre or "vadouvan" in nombre or "españa" in nombre or "mexicano" in nombre or "glühwein" in nombre:
+    # 4. Blends
+    keywords_blend = ["blend", "bbq", "curry", "baharat", "masala", "joe", "ranch",
+                      "pesto", "jerk", "panko", "criolla", "muddica", "nanami",
+                      "vadouvan", "glühwein"]
+    if any(kw in palabras for kw in keywords_blend):
         return "🌿 Blends"
-    elif "mocktail" in nombre:
+    # Blends por frase parcial (nombres compuestos)
+    if "panch phoron" in nombre or "españa" in nombre or "mexicano" in nombre or "mole" in nombre or "dry" in nombre or "honey" in nombre or "ajo" in nombre or "khmeli" in nombre or "advieh" in nombre or "za'" in nombre:
+        return "🌿 Blends"
+    # 5. Mocktails
+    if "mocktail" in nombre:
         return "🍹 Mocktails"
-    elif "pimienta" in nombre:
+    # 6. Pimientas
+    if "pimienta" in nombre:
         return "🌶️ Pimientas"
-    else:
-        return "🌿 Blends"
+    # Default
+    return "🌿 Blends"
 
 def buscar_imagenes(nombre_producto):
     """
