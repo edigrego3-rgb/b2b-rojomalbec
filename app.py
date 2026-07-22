@@ -597,8 +597,13 @@ for i, tab in enumerate(tabs):
         if cat_actual != "🏠 Todos":
             df_tab = df_tab[df_tab["Categoria"] == cat_actual]
             
+        desc_path = os.path.join(current_dir, "Descripciones_RojoMalbec.md")
+        
         if search:
-            df_tab = df_tab[df_tab["Nombre"].str.contains(search, case=False)]
+            # Buscar coincidencia tanto en el nombre como en la descripción del producto
+            mask_nombre = df_tab["Nombre"].str.contains(search, case=False, regex=False)
+            mask_desc = df_tab["Nombre"].apply(lambda n: search.lower() in extraer_descripcion(n, desc_path).lower())
+            df_tab = df_tab[mask_nombre | mask_desc]
             
         if df_tab.empty:
             st.info("No hay productos en esta categoría.")
@@ -616,28 +621,29 @@ for i, tab in enumerate(tabs):
             if pvp_guardado > 0:
                 pvp_final = pvp_guardado
             else:
-                # Si no lo guardaron en la ERP, lo calculamos EN VIVO usando el Markup de la base de datos
                 markup_revendedor = float(row.get("Markup_Revendedor", 0))
                 if markup_revendedor > 0:
                     pvp_final = precio_mayorista * (1 + markup_revendedor / 100)
                 else:
-                    # Fallback final si tampoco hay markup
                     pvp_final = precio_mayorista * 1.5
                     
             pvp_redondeado = redondear_precio(pvp_final)
             ganancia_neta = pvp_redondeado - costo_redondeado
             
-            desc_path = os.path.join(current_dir, "Descripciones_RojoMalbec.md")
             descripcion = extraer_descripcion(nombre, desc_path)
-            
             img_front, img_back = buscar_imagenes(nombre)
             
             qty_actual = st.session_state.carrito.get(nombre, {}).get("cantidad", 0)
             
             col_idx = idx % 2
             with cols[col_idx]:
-                # Badge de cantidad en carrito
-                badge_html = f"<div class='cart-badge'>{qty_actual}</div>" if qty_actual > 0 else ""
+                # Badge de cantidad en carrito o Novedad
+                if qty_actual > 0:
+                    badge_html = f"<div class='cart-badge'>{qty_actual}</div>"
+                elif "dry" in nombre.lower() or "honey" in nombre.lower():
+                    badge_html = "<div class='cart-badge' style='background:#d4af37; color:#000;'>🔥 NUEVO</div>"
+                else:
+                    badge_html = ""
                 
                 html_card = f"""<div class='card'>
 {badge_html}
