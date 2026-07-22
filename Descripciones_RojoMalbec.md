@@ -1,5 +1,5 @@
 # 🧂 CATÁLOGO ROJO MALBEC - DESCRIPCIONES PARA TIENDA ONLINE
-## 47 Productos Artesanales | Los Hornillos, Traslasierra
+## 48 Productos Artesanales | Los Hornillos, Traslasierra
 
 ---
 
@@ -965,3 +965,24 @@ Sugerencias: Paellas, arroces caldosos, cazuelas de mariscos. Como "rub" (frotad
 Tip del blender: Disolver 15 g (una cucharada) en el caldo caliente antes de volcarlo a la paellera. Esto asegura la "activación térmica" y una distribución perfecta del sabor.
 
 📦 Envase 50g · Hecho a mano · Producto artesanal · Traslasierra 🌐 rojomalbec.com.ar
+
+---
+
+## DRY HOT HONEY 🍯🌶️
+
+🍯🌶️ DRY HOT HONEY — Miel Picante Deshidratada · Edición de Autor · Rojo Malbec
+
+La nueva tendencia gourmet que llegó para quedarse. Una miel en polvo con doble sistema de picor: Chile Chaotian para el golpe inmediato y Gochugaru coreano para el calor dulce que persiste.
+
+Formulada con ingeniería de color triple (achiote, cúrcuma y maqui berry) y un sistema reológico que al reconstituir con agua tibia devuelve la viscosidad, el brillo y la pegajosidad de una miel real.
+
+Contiene Sal British Rojo Malbec (vinagre de malta) como eje salado-ácido que corta la saturación dulce y entrega el perfil agridulce distintivo del estilo New York Hot Honey.
+
+Sugerencias: Sobre pollo frito crujiente recién salido, pizza napolitana, waffles salados, costillas glaseadas. Reconstituir 20g en 10ml de agua tibia para obtener una salsa de miel picante líquida lista para glasear.
+
+Tip del blender: Espolvorear en seco sobre la piel caliente del pollo o la pizza. El calor residual del plato funde la miel en polvo in situ, liberando los aromas de los chiles sin necesidad de reconstituir.
+
+⚠️ CONTIENE GLUTEN (CEBADA) por vinagre de malta. Puede contener trazas de mostaza y sésamo.
+
+📦 Envase 50g · Hecho a mano · Producto artesanal · Traslasierra 🌐 rojomalbec.com.ar
+
