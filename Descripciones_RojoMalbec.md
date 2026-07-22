@@ -882,7 +882,7 @@ La joya de la cultura del Golfo Pérsico con fidelidad absoluta. "Karak" signifi
 
 ---
 
-## Té Verde del Zoco 🕌
+## Te Verde del Zoco 🕌
 
 ### Tierra Lotus | Blends de Tés & Infusiones
 
