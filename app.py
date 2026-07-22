@@ -282,12 +282,12 @@ def detectar_categoria(nombre_producto):
     nombre = str(nombre_producto).lower()
     if "sal " in nombre or nombre.startswith("sal"):
         return "🧂 Sales"
+    elif "té " in nombre or nombre.startswith("te ") or "pu-erh" in nombre or "puerh" in nombre or "rooibos" in nombre or "karak" in nombre or "zoco" in nombre:
+        return "🍵 Tés"
     elif "vital" in nombre:
         return "💚 Vital"
     elif "blend" in nombre or "bbq" in nombre or "curry" in nombre or "baharat" in nombre or "masala" in nombre or "joe" in nombre or "ranch" in nombre or "pesto" in nombre or "jerk" in nombre or "panko" in nombre or "criolla" in nombre or "muddica" in nombre or "nanami" in nombre or "panch phoron" in nombre or "vadouvan" in nombre or "españa" in nombre or "mexicano" in nombre or "glühwein" in nombre:
         return "🌿 Blends"
-    elif "té " in nombre or nombre.startswith("te ") or " rooibos" in nombre or nombre.startswith("rooibos") or " karak" in nombre or nombre.startswith("karak"):
-        return "🍵 Tés"
     elif "mocktail" in nombre:
         return "🍹 Mocktails"
     elif "pimienta" in nombre:
