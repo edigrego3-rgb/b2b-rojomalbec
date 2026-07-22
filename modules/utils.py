@@ -9,6 +9,17 @@ def redondear_precio(valor):
         return 0
     return math.ceil(valor / 100.0) * 100
 
+import unicodedata
+
+def normalizar_texto(texto):
+    """Quita tildes, guiones, convierte a minúsculas y elimina espacios extras."""
+    if not texto:
+        return ""
+    t = unicodedata.normalize('NFD', str(texto))
+    t = ''.join(c for c in t if unicodedata.category(c) != 'Mn')
+    t = t.lower().replace("-", " ").replace(":", " ")
+    return re.sub(r'\s+', ' ', t).strip()
+
 def extraer_descripcion(nombre_blend, filepath="Descripciones_RojoMalbec.md"):
     """
     Busca el nombre del blend en el archivo markdown y extrae su descripción
@@ -21,54 +32,52 @@ def extraer_descripcion(nombre_blend, filepath="Descripciones_RojoMalbec.md"):
         with open(filepath, 'r', encoding='utf-8') as f:
             contenido = f.read()
             
-        # Limpiar el nombre de la BD para que coincida mejor con el Markdown
-        nombre_buscar = nombre_blend.lower().replace("blend ", "").replace("vital ", "").strip()
+        nombre_norm = normalizar_texto(nombre_blend)
+        nombre_clean = nombre_norm.replace("blend ", "").replace("vital ", "").strip()
         
-        # Regex estricta: busca un encabezado ## que contenga el nombre en ESA misma línea,
-        # y captura hasta el próximo ## o el final del archivo.
-        patron = re.compile(rf"^##\s+[^\n]*?{re.escape(nombre_buscar)}[^\n]*\n(.*?)(?=^## |\Z)", re.MULTILINE | re.IGNORECASE | re.DOTALL)
-        match = patron.search(contenido)
+        secciones = re.split(r'^##\s+', contenido, flags=re.MULTILINE)
         
-        # Si falla, intentamos con el nombre original completo
-        if not match:
-            patron_alt = re.compile(rf"^##\s+[^\n]*?{re.escape(nombre_blend)}[^\n]*\n(.*?)(?=^## |\Z)", re.MULTILINE | re.IGNORECASE | re.DOTALL)
-            match = patron_alt.search(contenido)
+        for sec in secciones[1:]:
+            lineas = sec.split('\n')
+            if not lineas:
+                continue
+            titulo_norm = normalizar_texto(lineas[0])
             
-        if match:
-            bloque = match.group(1)
-            lineas = bloque.split('\n')
-            
-            descripcion_limpia = []
-            ingredientes_texto = ""
-            
-            for linea in lineas:
-                linea = linea.strip()
-                if not linea or linea.startswith('---') or linea.startswith('>') or linea.startswith('#') or linea.startswith('='):
-                    continue
+            # Coincidencia flexible por título
+            if (nombre_norm in titulo_norm or 
+                nombre_clean in titulo_norm or 
+                (len(nombre_clean) > 3 and titulo_norm in nombre_clean)):
                 
-                # Limpiar negritas
-                linea_limpia = linea.replace('**', '')
+                descripcion_limpia = []
+                ingredientes_texto = ""
                 
-                if linea_limpia.startswith('Ingredientes:'):
-                    ingredientes_texto = linea_limpia
-                elif linea_limpia.startswith('Técnica') or linea_limpia.startswith('Maridaje') or linea_limpia.startswith('Uso') or linea_limpia.startswith('Perfil'):
-                    descripcion_limpia.append(f"• {linea_limpia}")
-                else:
-                    if not ingredientes_texto and not linea_limpia.startswith('•'):
-                        descripcion_limpia.append(linea_limpia)
-            
-            # Unir todo de forma prolija
-            texto_final = " ".join([l for l in descripcion_limpia if not l.startswith('•')])
-            texto_final += "\n\n"
-            if ingredientes_texto:
-                texto_final += f"🌿 {ingredientes_texto}\n"
-            for extra in [l for l in descripcion_limpia if l.startswith('•')]:
-                texto_final += f"{extra}\n"
+                for linea in lineas[1:]:
+                    linea_str = linea.strip()
+                    if not linea_str or linea_str.startswith('---') or linea_str.startswith('>') or linea_str.startswith('#') or linea_str.startswith('='):
+                        continue
+                    
+                    linea_limpia = linea_str.replace('**', '')
+                    
+                    if linea_limpia.startswith('Ingredientes:'):
+                        ingredientes_texto = linea_limpia
+                    elif any(linea_limpia.startswith(kw) for kw in ['Técnica', 'Maridaje', 'Uso', 'Perfil', 'Sugerencias', 'Tip']):
+                        descripcion_limpia.append(f"• {linea_limpia}")
+                    else:
+                        if not ingredientes_texto and not linea_limpia.startswith('•'):
+                            descripcion_limpia.append(linea_limpia)
                 
-            resultado = texto_final.strip()
-            return resultado if resultado else "Una creación premium de Rojo Malbec."
+                texto_final = " ".join([l for l in descripcion_limpia if not l.startswith('•')])
+                texto_final += "\n\n"
+                if ingredientes_texto:
+                    texto_final += f"🌿 {ingredientes_texto}\n"
+                for extra in [l for l in descripcion_limpia if l.startswith('•')]:
+                    texto_final += f"{extra}\n"
+                    
+                resultado = texto_final.strip()
+                if resultado:
+                    return resultado
     except Exception as e:
-        print(f"Error extraendo: {e}")
+        print(f"Error extrayendo: {e}")
         pass
         
     return "Una creación premium de Rojo Malbec."
