@@ -219,9 +219,15 @@ iframe[src*="streamlit"] {display: none !important;}
 }
 
 /* === EXPANDER === */
-.streamlit-expanderHeader {
-    font-size: 0.85em !important;
-    color: #aaa !important;
+.streamlit-expanderHeader, [data-testid="stExpander"] details summary p {
+    font-size: 0.95em !important;
+    font-weight: 600 !important;
+    color: #d4af37 !important;
+}
+[data-testid="stExpander"] {
+    border: 1px solid #2a2a3a !important;
+    border-radius: 10px !important;
+    background-color: #12121a !important;
 }
 
 /* === HEADINGS === */
@@ -676,7 +682,7 @@ for i, tab in enumerate(tabs):
                 
                 # Descripción colapsable
                 with st.expander("🌿 Ingredientes y maridaje"):
-                    st.markdown(f"<div style='font-size:0.88em; color:#ccc; white-space:pre-wrap;'>{descripcion}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size:0.95em; color:#f8f9fa; line-height:1.55; white-space:pre-wrap;'>{descripcion}</div>", unsafe_allow_html=True)
                 
                 # --- CONTROLES DE CARRITO MEJORADOS ---
                 if qty_actual == 0:
