@@ -600,6 +600,11 @@ for i, tab in enumerate(tabs):
         if cat_actual != "🏠 Todos":
             df_tab = df_tab[df_tab["Categoria"] == cat_actual]
             
+        # Poner DRY HOT HONEY arriba de todo en la pestaña Blends
+        if cat_actual == "🌿 Blends" and not df_tab.empty:
+            es_dry = df_tab["Nombre"].str.contains("dry|honey", case=False)
+            df_tab = pd.concat([df_tab[es_dry], df_tab[~es_dry]])
+            
         desc_path = os.path.join(current_dir, "Descripciones_RojoMalbec.md")
         
         if search:
