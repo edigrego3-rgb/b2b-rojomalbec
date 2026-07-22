@@ -870,13 +870,15 @@ La joya de la cultura del Golfo Pérsico con fidelidad absoluta. "Karak" signifi
 
 ## Té Pu-Erh Rojo Malbec 🍷
 
-El carácter de la tierra con el brillo del sol. Un té de guarda con alma de vino. El Pu-erh es un té "vivo" que absorbe aromas externos.
+### Tierra Lotus | Blends de Tés & Infusiones
 
-**Ingredientes:** Té Pu-erh rojo, cáscara de naranja deshidratada, jengibre glaseado, canela quebrada, flor de caléndula
+"La arquitectura de este blend radica en domar la inmensidad de la tierra." Un té rojo Shou Pu-erh de Yunnan de guarda, denso, antiguo y místico, que se encuentra con la nobleza del Chenpi (cáscara de mandarina deshidratada) para aportar un dulzor terroso, maduro y profundo. La canela de Ceilán y el jengibre deshidratado actúan como un puente aromático entre la luz cítrica del Chenpi y la oscuridad cavernosa de la madera. Una verdadera obra de ingeniería botánica reducida a su expresión más monolítica y esencial.
 
-**Color en taza:** Caoba profundo con destellos rubí (similar a un Malbec joven).
+**Ingredientes:** Té Shou Pu-erh (Yunnan), cáscara de mandarina (Chenpi), canela de Ceilán, jengibre deshidratado.
 
-**Infusión:** 90-95°C durante 3-5 minutos. Ideal como digestivo o para maridar con chocolates amargos.
+**Técnica de Crianza:** Al eliminar la naranja, el blend se concentra exclusivamente en el Chenpi (10%) y el Pu-erh (81%). Las hebras reposan durante 48 horas en un proceso de "crianza pasiva", permitiendo que los aceites esenciales del cítrico migren y se anclen en la estructura porosa de la hoja de té rojo.
+
+**Preparación:** 2g (o una cucharadita) por 200ml de agua a 95°C. Infundir de 4 a 5 minutos. Ideal para maridar con chocolates amargos (>70% cacao).
 
 ---
 
