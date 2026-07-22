@@ -868,7 +868,7 @@ La joya de la cultura del Golfo Pérsico con fidelidad absoluta. "Karak" signifi
 
 ---
 
-## Té Pu-Erh Rojo Malbec 🍷
+## Te Pu Erh Rojo Malbec 🍷
 
 ### Tierra Lotus | Blends de Tés & Infusiones
 
