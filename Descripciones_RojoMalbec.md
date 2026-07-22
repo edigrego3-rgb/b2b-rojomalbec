@@ -1,5 +1,5 @@
 # 🧂 CATÁLOGO ROJO MALBEC - DESCRIPCIONES PARA TIENDA ONLINE
-## 46 Productos Artesanales | Los Hornillos, Traslasierra
+## 47 Productos Artesanales | Los Hornillos, Traslasierra
 
 ---
 
@@ -880,6 +880,22 @@ El carácter de la tierra con el brillo del sol. Un té de guarda con alma de vi
 
 ---
 
+## Té Verde del Zoco 🕌
+
+### Tierra Lotus | Blends de Tés & Infusiones
+
+Inspirado en el clásico té a la menta del Magreb (*atay b'naanaa*), este blend de autor es un viaje sensorial a los pasajes perfumados, ruidosos y mágicos de los zocos del norte de África. La base tradicional de té verde Gunpowder se fusiona con menta de variedad Nana (más dulce, suave y fresca que la menta piperita) y cobra un vuelo de autor único al incorporar dados de durazno, manzana, jengibre y la calidez del cardamomo verde machacado.
+
+Al no estar oxidado, el té verde conserva una altísima concentración de catequinas (antioxidantes). Esto requiere un ritual de infusión sagrado: el agua debe estar templada para evitar que la sobre-extracción opaque su frescura con notas astringentes. Es un blend sofisticado, tan reconfortante para beber caliente como estimulante al servirse sobre hielo como *Iced Tea* en las tardes de verano.
+
+**Ingredientes:** Té verde (Gunpowder o Chun Mee), menta Nana, lemongrass, durazno deshidratado, manzana deshidratada, jengibre, cardamomo, coriandro, pétalos de rosa.
+
+**Técnica de Autor:** Uso exclusivo de Menta Nana para un dulzor auténtico. Corte de jengibre extra fino para garantizar su infusión a bajas temperaturas (80°C) y pétalos de rosa enteros que aportan su belleza visual al abrir la hebra.
+
+**Preparación:** 1 cucharadita colmada (3-4g) por taza de agua a 80°C (nunca hirviendo). Infundir durante 2.5 a 3 minutos. Para *Iced Tea*: preparar a doble concentración y colar directamente sobre hielo.
+
+---
+
 # ═══════════════════════════════════════════════════════════════
 # 📊 RESUMEN DEL CATÁLOGO
 # ═══════════════════════════════════════════════════════════════
@@ -891,8 +907,8 @@ El carácter de la tierra con el brillo del sol. Un té de guarda con alma de vi
 | Línea Vital (0% Sodio) | 7 | Para hipertensos - Hongos + Levadura |
 | Pimientas de Autor | 3 | Para molinillo, perfiles únicos |
 | Bases Mocktails | 3 | Siropes y cócteles sin alcohol |
-| Tés de Autor | 3 | Rooibos, Karak, Pu-Erh |
-| **TOTAL** | **46** | |
+| Tés de Autor | 4 | Rooibos, Karak, Pu-Erh, del Zoco |
+| **TOTAL** | **47** | |
 
 ---
 
