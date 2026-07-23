@@ -220,7 +220,7 @@ iframe[src*="streamlit"] {display: none !important;}
 
 /* === EXPANDER === */
 .streamlit-expanderHeader, [data-testid="stExpander"] details summary p {
-    font-size: 0.95em !important;
+    font-size: 1.05em !important;
     font-weight: 600 !important;
     color: #d4af37 !important;
 }
@@ -682,7 +682,7 @@ for i, tab in enumerate(tabs):
                 
                 # Descripción colapsable
                 with st.expander("🌿 Ingredientes y maridaje"):
-                    st.markdown(f"<div style='font-size:0.95em; color:#f8f9fa; line-height:1.55; white-space:pre-wrap;'>{descripcion}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size:1.1em; color:#f8f9fa; line-height:1.55; white-space:pre-wrap;'>{descripcion}</div>", unsafe_allow_html=True)
                 
                 # --- CONTROLES DE CARRITO MEJORADOS ---
                 if qty_actual == 0:
